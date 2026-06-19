@@ -15,12 +15,14 @@
     <div class="list-card" data-id="{{ lst.id }}">
         <div class="list-header">
             <div class="drag-handle list-drag-handle">☰</div>
-            <h2>{{ lst.title }}</h2>
+            <h2 class="list-title">{{ lst.title }}</h2>
+            <span class="toggle-icon">▼</span>
             <form action="{{ url_for('main.delete_list', list_id=lst.id) }}" method="POST" class="delete-form">
                 <button type="submit" class="btn btn-icon delete-list-btn" title="Delete list">&times;</button>
             </form>
         </div>
 
+        <div class="list-content">
         <div class="items-container" data-list-id="{{ lst.id }}">
             {% for item in lst.items %}
             <div class="item {% if item.item_status %}completed{% endif %}" data-id="{{ item.id }}">
@@ -45,6 +47,7 @@
             <input type="text" name="item_name" placeholder="Add a task..." required autocomplete="off">
             <button type="submit" class="btn btn-secondary">Add</button>
         </form>
+        </div>
     </div>
     {% endfor %}
 </div>

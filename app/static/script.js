@@ -1,23 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Accordion toggle
+    document.querySelectorAll('.list-title, .toggle-icon').forEach(el => {
+        el.addEventListener('click', (e) => {
+            const card = e.target.closest('.list-card');
+            if (card) {
+                card.classList.toggle('expanded');
+            }
+        });
+    });
+
     // Add micro-animations or subtle effects
     const cards = document.querySelectorAll('.list-card');
-    
-    // Add a subtle staggered fade-in effect to the cards
-    cards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-        
-        setTimeout(() => {
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-            
-            // Remove inline transition to let CSS hover effects take over after animation
-            setTimeout(() => {
-                card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
-            }, 400);
-        }, 100 * index);
-    });
 
     // Auto-focus input when a form is clicked (if it's not already focused)
     const forms = document.querySelectorAll('.add-item-form, .add-list-form');

@@ -294,3 +294,31 @@ input[type="text"]::placeholder {
     background: rgba(255, 255, 255, 0.1);
     border: 1px dashed var(--accent);
 }
+
+/* Accordion styles */
+.list-content {
+    display: none;
+}
+
+.list-card.expanded .list-content {
+    display: block;
+}
+
+.list-title {
+    flex: 1;
+    cursor: pointer;
+    margin-left: 0.5rem;
+}
+
+.toggle-icon {
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+    color: var(--text-secondary);
+    transition: transform 0.3s ease;
+    user-select: none;
+}
+
+.list-card.expanded .toggle-icon {
+    transform: rotate(180deg);
+}

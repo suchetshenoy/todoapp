@@ -9,7 +9,7 @@ class List(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
-    items = db.relationship('Item', backref='list', lazy=True, cascade="all, delete-orphan", order_by="Item.item_position")
+    items = db.relationship('Item', backref='list', lazy=True, cascade="all, delete-orphan", order_by="Item.item_status, Item.item_position")
 
 class Item(db.Model):
     __tablename__ = 'items'
