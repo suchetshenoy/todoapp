@@ -1,10 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
+        // Restore expanded state from localStorage
+    const expandedLists = JSON.parse(localStorage.getItem('expandedLists') || '[]');
+    expandedLists.forEach(id => {
+        const card = document.querySelector(`.list-card[data-id="${id}"]`);
+        if (card) card.classList.add('expanded');
+    });
+
     // Accordion toggle
     document.querySelectorAll('.list-title, .toggle-icon').forEach(el => {
         el.addEventListener('click', (e) => {
             const card = e.target.closest('.list-card');
             if (card) {
                 card.classList.toggle('expanded');
+                
+                // Save state to localStorage
+                const listId = card.getAttribute('data-id');
+                let expanded = JSON.parse(localStorage.getItem('expandedLists') || '[]');
+                
+                if (card.classList.contains('expanded')) {
+                    if (!expanded.includes(listId)) expanded.push(listId);
+                } else {
+                    expanded = expanded.filter(id => id !== listId);
+                }
+                localStorage.setItem('expandedLists', JSON.stringify(expanded));
             }
         });
     });
