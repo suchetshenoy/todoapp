@@ -156,8 +156,23 @@ body {
 }
 
 .item.completed .checkbox-btn {
-    background: var(--success);
-    border-color: var(--success);
+    background: var(--text-secondary);
+    border-color: var(--text-secondary);
+}
+
+.completed-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--card-border);
+}
+
+.completed-heading {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+    margin-left: 0.25rem;
 }
 
 .item.completed .item-name {

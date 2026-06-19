@@ -22,31 +22,52 @@
             </form>
         </div>
 
-        <div class="list-content">
-        <div class="items-container" data-list-id="{{ lst.id }}">
-            {% for item in lst.items %}
-            <div class="item {% if item.item_status %}completed{% endif %}" data-id="{{ item.id }}">
-                <div class="drag-handle item-drag-handle">⋮⋮</div>
-                <form action="{{ url_for('main.toggle_item', item_id=item.id) }}" method="POST" class="toggle-form">
-                    <button type="submit" class="checkbox-btn">
-                        {% if item.item_status %}
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                        {% endif %}
-                    </button>
-                </form>
-                <span class="item-name">{{ item.item_name }}</span>
-                <form action="{{ url_for('main.delete_item', item_id=item.id) }}" method="POST" class="delete-form">
-                    <button type="submit" class="btn btn-icon delete-item-btn">&times;</button>
-                </form>
-            </div>
-            {% endfor %}
-        </div>
+                <div class="list-content">
+            <div class="items-container" data-list-id="{{ lst.id }}">
+                <!-- Active Items -->
+                {% for item in lst.items %}
+                    {% if not item.item_status %}
+                    <div class="item" data-id="{{ item.id }}">
+                        <div class="drag-handle item-drag-handle">⋮⋮</div>
+                        <form action="{{ url_for('main.toggle_item', item_id=item.id) }}" method="POST" class="toggle-form">
+                            <button type="submit" class="checkbox-btn"></button>
+                        </form>
+                        <span class="item-name">{{ item.item_name }}</span>
+                        <form action="{{ url_for('main.delete_item', item_id=item.id) }}" method="POST" class="delete-form">
+                            <button type="submit" class="btn btn-icon delete-item-btn">&times;</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                {% endfor %}
 
-        <!-- Form to add a new item to this list -->
-        <form action="{{ url_for('main.add_item', list_id=lst.id) }}" method="POST" class="add-item-form">
-            <input type="text" name="item_name" placeholder="Add a task..." required autocomplete="off">
-            <button type="submit" class="btn btn-secondary">Add</button>
-        </form>
+                <!-- Completed Items Section -->
+                {% set completed_items = lst.items|selectattr('item_status')|list %}
+                {% if completed_items %}
+                <div class="completed-section">
+                    <h4 class="completed-heading">Completed</h4>
+                    {% for item in completed_items %}
+                    <div class="item completed" data-id="{{ item.id }}">
+                        <div class="drag-handle item-drag-handle">⋮⋮</div>
+                        <form action="{{ url_for('main.toggle_item', item_id=item.id) }}" method="POST" class="toggle-form">
+                            <button type="submit" class="checkbox-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </button>
+                        </form>
+                        <span class="item-name">{{ item.item_name }}</span>
+                        <form action="{{ url_for('main.delete_item', item_id=item.id) }}" method="POST" class="delete-form">
+                            <button type="submit" class="btn btn-icon delete-item-btn">&times;</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Form to add a new item to this list -->
+            <form action="{{ url_for('main.add_item', list_id=lst.id) }}" method="POST" class="add-item-form">
+                <input type="text" name="item_name" placeholder="Add a task..." required autocomplete="off">
+                <button type="submit" class="btn btn-secondary">Add</button>
+            </form>
         </div>
     </div>
     {% endfor %}
