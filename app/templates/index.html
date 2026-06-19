@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+ <div class="lists-container" id="lists-container">
+    <!-- Form to add a new list -->
+    <div class="list-card new-list-card">
+        <form action="{{ url_for('main.add_list') }}" method="POST" class="add-list-form">
+            <input type="text" name="title" placeholder="Create new list..." required autocomplete="off">
+            <button type="submit" class="btn btn-primary">+</button>
+        </form>
+    </div>
+
+    <!-- Loop through existing lists -->
+    {% for lst in todo_lists %}
+    <div class="list-card" data-id="{{ lst.id }}">
+        <div class="list-header">
+            <div class="drag-handle list-drag-handle">☰</div>
+            <h2>{{ lst.title }}</h2>
+            <form action="{{ url_for('main.delete_list', list_id=lst.id) }}" method="POST" class="delete-form">
+                <button type="submit" class="btn btn-icon delete-list-btn" title="Delete list">&times;</button>
+            </form>
+        </div>
+
+        <div class="items-container" data-list-id="{{ lst.id }}">
+            {% for item in lst.items %}
+            <div class="item {% if item.item_status %}completed{% endif %}" data-id="{{ item.id }}">
+                <div class="drag-handle item-drag-handle">⋮⋮</div>
+                <form action="{{ url_for('main.toggle_item', item_id=item.id) }}" method="POST" class="toggle-form">
+                    <button type="submit" class="checkbox-btn">
+                        {% if item.item_status %}
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        {% endif %}
+                    </button>
+                </form>
+                <span class="item-name">{{ item.item_name }}</span>
+                <form action="{{ url_for('main.delete_item', item_id=item.id) }}" method="POST" class="delete-form">
+                    <button type="submit" class="btn btn-icon delete-item-btn">&times;</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Form to add a new item to this list -->
+        <form action="{{ url_for('main.add_item', list_id=lst.id) }}" method="POST" class="add-item-form">
+            <input type="text" name="item_name" placeholder="Add a task..." required autocomplete="off">
+            <button type="submit" class="btn btn-secondary">Add</button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
